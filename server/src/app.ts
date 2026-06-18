@@ -12,6 +12,18 @@ app.use(express.urlencoded({ extended: true }));
 const clientBuildPath = path.join(__dirname, "../../client/dist");
 app.use(express.static(clientBuildPath));
 
+import { connectDB } from "./core/utils/db";
+
+// Ensure database connection is active for API requests
+app.use("/api", async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
 import authRoutes from "./modules/auth/auth.routes";
 import consultationRoutes from "./modules/consultations/consultation.routes";
 import settingsRoutes from "./modules/settings/settings.routes";

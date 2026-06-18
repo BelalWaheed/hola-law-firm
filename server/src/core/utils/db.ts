@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 export const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) {
+    return;
+  }
+
   const atlasUri = process.env.MONGO_URI;
   const localUri = process.env.MONGO_URI_LOCAL || "mongodb://127.0.0.1:27017/hola_law_firm";
 
@@ -13,8 +17,8 @@ export const connectDB = async () => {
       console.log("Successfully connected to configured MongoDB database");
       return;
     } catch (error) {
-      console.error("Database connection failed. Exiting process...", error);
-      process.exit(1);
+      console.error("Database connection failed:", error);
+      throw error;
     }
   }
 
@@ -25,8 +29,8 @@ export const connectDB = async () => {
     await mongoose.connect(localUri);
     console.log("Successfully connected to local MongoDB");
   } catch (error) {
-    console.error("Local MongoDB connection failed. Exiting process...", error);
-    process.exit(1);
+    console.error("Local MongoDB connection failed:", error);
+    throw error;
   }
 };
 
