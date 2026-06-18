@@ -18,14 +18,20 @@ export const connectDB = async () => {
   }
 
   const atlasUri = process.env.MONGO_URI;
-  const localUri = process.env.MONGO_URI_LOCAL || "mongodb://127.0.0.1:27017/hola_law_firm";
+  const localUri =
+    process.env.MONGO_URI_LOCAL || "mongodb://127.0.0.1:27017/hola_law_firm";
 
-  const isAtlasPlaceholder = atlasUri ? (atlasUri.includes("<username>") || atlasUri.includes("<password>")) : true;
+  const isAtlasPlaceholder = atlasUri
+    ? atlasUri.includes("<username>") || atlasUri.includes("<password>")
+    : true;
 
   if (atlasUri && !isAtlasPlaceholder) {
     try {
       console.log("Attempting to connect to configured MongoDB database...");
-      cachedConnection = mongoose.connect(atlasUri);
+      cachedConnection = mongoose.connect(atlasUri, {
+        serverSelectionTimeoutMS: 5000,
+        connectTimeoutMS: 5000,
+      });
       await cachedConnection;
       console.log("Successfully connected to configured MongoDB database");
       return;
@@ -37,10 +43,15 @@ export const connectDB = async () => {
   }
 
   // Fallback to local DB ONLY if MONGO_URI is missing or contains placeholders
-  console.log("MONGO_URI not configured. Attempting connection to local MongoDB database...");
+  console.log(
+    "MONGO_URI not configured. Attempting connection to local MongoDB database...",
+  );
   try {
     console.log(`Attempting to connect to local MongoDB: ${localUri}`);
-    cachedConnection = mongoose.connect(localUri);
+    cachedConnection = mongoose.connect(localUri, {
+      serverSelectionTimeoutMS: 5000,
+      connectTimeoutMS: 5000,
+    });
     await cachedConnection;
     console.log("Successfully connected to local MongoDB");
   } catch (error) {
@@ -49,4 +60,3 @@ export const connectDB = async () => {
     throw error;
   }
 };
-

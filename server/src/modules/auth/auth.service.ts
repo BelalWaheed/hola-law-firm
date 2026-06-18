@@ -8,8 +8,15 @@ export class AuthService {
     const adminPass = process.env.ADMIN_PASS;
 
     // Fail immediately if environment variables are not configured properly
-    if (!adminUser || !adminPass || adminUser.trim() === "" || adminPass.trim() === "") {
-      console.error("ADMIN_USER or ADMIN_PASS environment variables are not configured.");
+    if (
+      !adminUser ||
+      !adminPass ||
+      adminUser.trim() === "" ||
+      adminPass.trim() === ""
+    ) {
+      console.error(
+        "ADMIN_USER or ADMIN_PASS environment variables are not configured.",
+      );
       return null;
     }
 

@@ -6,4 +6,4 @@ connectDB().catch((err) => {
   console.error("Vercel database warm-up failed:", err);
 });
 
-module.exports = app;
+export default app;
