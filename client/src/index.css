@@ -1,0 +1,811 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-primary: #0a1628;
+  --color-bg-secondary: #0f1f35;
+  --color-bg-card: #152238;
+  --color-accent-gold: #c9a227;
+  --color-accent-gold-light: #e8c547;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #94a3b8;
+  --color-border-color: #1e3a5f;
+}
+
+/* ───────────────────────────────────────────────
+   BASE LAYER — resets, root variables, body defaults
+   Lower specificity than @layer utilities,
+   so Tailwind classes override these naturally.
+   ─────────────────────────────────────────────── */
+@layer base {
+  :root {
+    --bg-primary: #0a1628;
+    --bg-secondary: #0f1f35;
+    --bg-card: #152238;
+    --accent-gold: #c9a227;
+    --accent-gold-light: #e8c547;
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --border-color: #1e3a5f;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+  }
+
+  #root {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+}
+
+/* ───────────────────────────────────────────────
+   COMPONENTS LAYER — all custom component classes.
+   These sit BELOW @layer utilities in specificity,
+   so any Tailwind utility class overrides them
+   without needing !important.
+   ─────────────────────────────────────────────── */
+@layer components {
+
+  /* ── Font helpers ── */
+  .font-amiri {
+    font-family: 'Amiri', serif;
+  }
+
+  /* ── Ambient glow blobs ── */
+  .blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .blob-1 {
+    width: 500px;
+    height: 500px;
+    background: rgba(201, 162, 39, 0.06);
+    top: -100px;
+    left: -100px;
+    animation: blobFloat 12s ease-in-out infinite alternate;
+  }
+
+  .blob-2 {
+    width: 400px;
+    height: 400px;
+    background: rgba(30, 58, 95, 0.25);
+    bottom: -80px;
+    right: -80px;
+    animation: blobFloat 15s ease-in-out infinite alternate-reverse;
+  }
+
+  /* ── Background pattern ── */
+  .bg-pattern {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.03;
+    background-image:
+      linear-gradient(45deg, transparent 45%, var(--accent-gold) 45%, var(--accent-gold) 55%, transparent 55%),
+      linear-gradient(-45deg, transparent 45%, var(--accent-gold) 45%, var(--accent-gold) 55%, transparent 55%);
+    background-size: 60px 60px;
+  }
+
+  /* ── Floating particles ── */
+  .particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--accent-gold);
+    border-radius: 50%;
+    opacity: 0;
+    animation: floatParticle 8s infinite;
+  }
+
+  /* ── Navigation ── */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: linear-gradient(180deg, var(--bg-primary) 0%, transparent 100%);
+    padding: 1.5rem 0;
+    transition: all 0.3s ease;
+  }
+
+  .navbar.scrolled {
+    background: rgba(10, 22, 40, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 1rem 0;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .nav-link {
+    position: relative;
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    right: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-gold);
+    transition: width 0.3s ease;
+  }
+
+  .nav-link:hover {
+    color: var(--accent-gold);
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  /* ── Hero section ── */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(ellipse at 20% 80%, rgba(201, 162, 39, 0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(30, 58, 95, 0.3) 0%, transparent 50%),
+      linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  }
+
+  .hero-scales {
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    transform: translateY(-50%);
+    opacity: 0.05;
+    animation: rotateScales 30s linear infinite;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    color: var(--text-secondary);
+    margin-top: 1.5rem;
+    font-weight: 300;
+  }
+
+  /* ── Buttons ── */
+  .btn-primary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2.5rem;
+    background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%);
+    color: var(--bg-primary);
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .btn-primary:hover::before {
+    left: 100%;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 40px rgba(201, 162, 39, 0.4);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2.5rem;
+    background: transparent;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 1.1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+    background: rgba(201, 162, 39, 0.05);
+  }
+
+  /* ── Stat cards ── */
+  .stat-card {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(21, 34, 56, 0.5);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .stat-card:hover {
+    border-color: var(--accent-gold);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .stat-number {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--accent-gold);
+    font-family: 'Amiri', serif;
+  }
+
+  .stat-label {
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+    font-size: 1rem;
+  }
+
+  /* ── Service cards ── */
+  .service-card {
+    position: relative;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(201, 162, 39, 0.1) 0%, transparent 70%);
+    transform: translate(30%, -30%);
+    transition: all 0.4s ease;
+  }
+
+  .service-card:hover::before {
+    width: 200px;
+    height: 200px;
+  }
+
+  .service-card:hover {
+    border-color: var(--accent-gold);
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+  }
+
+  .service-icon {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(201, 162, 39, 0.2) 0%, rgba(201, 162, 39, 0.05) 100%);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .service-card:hover .service-icon {
+    background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%);
+  }
+
+  .service-card:hover .service-icon svg {
+    stroke: var(--bg-primary);
+  }
+
+  .service-icon svg {
+    width: 32px;
+    height: 32px;
+    stroke: var(--accent-gold);
+    stroke-width: 1.5;
+    fill: none;
+    transition: all 0.3s ease;
+  }
+
+  .service-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+  }
+
+  .service-desc {
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+
+  /* ── Lawyer cards ── */
+  .lawyer-card {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .lawyer-card:hover {
+    border-color: var(--accent-gold);
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+  }
+
+  .lawyer-image {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    filter: grayscale(30%);
+    transition: all 0.4s ease;
+  }
+
+  .lawyer-card:hover .lawyer-image {
+    filter: grayscale(0%);
+  }
+
+  .lawyer-info {
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .lawyer-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .lawyer-title {
+    color: var(--accent-gold);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+  }
+
+  .lawyer-social {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .lawyer-social a {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(201, 162, 39, 0.1);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+
+  .lawyer-social a:hover {
+    background: var(--accent-gold);
+  }
+
+  .lawyer-social a svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--accent-gold);
+    transition: all 0.3s ease;
+  }
+
+  .lawyer-social a:hover svg {
+    stroke: var(--bg-primary);
+  }
+
+  /* ── Contact form ── */
+  .form-container {
+    background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .form-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(201, 162, 39, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-label {
+    display: block;
+    margin-bottom: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    background: rgba(10, 22, 40, 0.5);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.1);
+  }
+
+  .form-input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.5;
+  }
+
+  textarea.form-input {
+    resize: vertical;
+    min-height: 150px;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    padding: 4rem 0 2rem;
+    position: relative;
+  }
+
+  .footer-links a {
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+  }
+
+  .footer-links a:hover {
+    color: var(--accent-gold);
+  }
+
+  /* ── Scroll reveal animation ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── Mobile menu ── */
+  .mobile-menu-btn {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    padding: 10px;
+  }
+
+  .mobile-menu-btn span {
+    width: 28px;
+    height: 2px;
+    background: var(--text-primary);
+    transition: all 0.3s ease;
+  }
+
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 340px;
+    height: 100vh;
+    background: rgba(15, 31, 53, 0.98);
+    backdrop-filter: blur(20px);
+    border-left: 1px solid var(--border-color);
+    padding: 2rem 1.5rem;
+    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease;
+    z-index: 200;
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+    visibility: hidden;
+    overflow-y: auto;
+    text-align: right;
+  }
+
+  .mobile-menu.active {
+    right: 0;
+    visibility: visible;
+  }
+
+  /* ── Notification Bell & Reply Highlights ── */
+  @keyframes bellGlow {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+
+  .notification-bell-active {
+    animation: bellGlow 2s infinite ease-in-out;
+  }
+
+  @keyframes goldGlowFlash {
+    0% {
+      box-shadow: 0 0 0 0 rgba(201, 162, 39, 0.3);
+      border-color: var(--accent-gold);
+    }
+    50% {
+      box-shadow: 0 0 20px 4px rgba(201, 162, 39, 0.6);
+      border-color: var(--accent-gold-light);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(201, 162, 39, 0);
+      border-color: var(--border-color);
+    }
+  }
+
+  .highlighted-reply-card {
+    animation: goldGlowFlash 2.5s ease-in-out infinite alternate;
+  }
+
+  .mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 150;
+  }
+
+  .mobile-menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* ── Section utilities ── */
+  .section-divider {
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-gold), var(--accent-gold-light));
+    margin: 1.5rem auto;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    text-align: center;
+  }
+}
+
+/* ───────────────────────────────────────────────
+   KEYFRAME ANIMATIONS
+   (keyframes are layer-independent)
+   ─────────────────────────────────────────────── */
+@keyframes blobFloat {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(40px, 30px) scale(1.1); }
+}
+
+@keyframes floatParticle {
+  0%   { opacity: 0; transform: translateY(100vh) scale(0); }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.6; }
+  100% { opacity: 0; transform: translateY(-100px) scale(1); }
+}
+
+@keyframes rotateScales {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to   { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* ───────────────────────────────────────────────
+   RESPONSIVE BREAKPOINTS
+   Inside @layer components so they only affect
+   our own component classes, never Tailwind utilities.
+   ─────────────────────────────────────────────── */
+@layer components {
+  @media (min-width: 1440px) {
+    .hero-title  { font-size: 5.5rem; }
+    .section-title { font-size: 3.5rem; }
+  }
+
+  @media (max-width: 1024px) {
+    .hero-title    { font-size: clamp(2.2rem, 5vw, 3.8rem); }
+    .service-card  { padding: 2rem; }
+    .form-container { padding: 2rem; }
+    .stat-number   { font-size: 2.5rem; }
+  }
+
+  @media (max-width: 768px) {
+    .mobile-menu-btn { display: flex; }
+    .desktop-nav     { display: none; }
+
+    .hero-scales  { opacity: 0.02; }
+    .hero         { min-height: 90vh; padding-top: 80px; }
+    .hero-title   { font-size: clamp(2rem, 6vw, 3rem); }
+    .hero-subtitle { font-size: 1rem; }
+
+    .stat-card   { padding: 1.5rem 1rem; }
+    .stat-number { font-size: 2.2rem; }
+
+    .lawyer-card { max-width: 400px; margin: 0 auto; }
+
+    .form-container { padding: 1.75rem 1.25rem; }
+    .section-title  { font-size: 1.8rem; }
+
+    .btn-primary,
+    .btn-secondary {
+      padding: 0.85rem 1.75rem;
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    body { font-size: 15px; }
+
+    .navbar { padding: 1rem 0; }
+
+    .hero {
+      min-height: 100svh;
+      padding-top: 70px;
+    }
+
+    .hero-title {
+      font-size: clamp(1.8rem, 8vw, 2.5rem);
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      margin-top: 1rem;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      width: 100%;
+      justify-content: center;
+      padding: 0.9rem 1.5rem;
+    }
+
+    .stat-card   { padding: 1rem 0.75rem; }
+    .stat-number { font-size: 2rem; }
+    .stat-label  { font-size: 0.85rem; }
+
+    .service-card  { padding: 1.5rem 1.25rem; }
+    .service-title { font-size: 1.2rem; }
+
+    .lawyer-image { height: 220px; }
+
+    .footer     { padding: 3rem 0 1.5rem; }
+    .form-input { font-size: 16px; }
+    .section-title { font-size: 1.6rem; }
+  }
+
+  @media (max-width: 360px) {
+    .hero-title  { font-size: 1.6rem; }
+    .stat-number { font-size: 1.8rem; }
+    .service-card, .form-container { padding: 1.25rem 1rem; }
+    .lawyer-image { height: 200px; }
+  }
+
+  @media (hover: none) {
+    .service-card:hover,
+    .stat-card:hover,
+    .lawyer-card:hover {
+      transform: none;
+    }
+    .btn-primary:hover {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+}
+
+/* ───────────────────────────────────────────────
+   SAFE-AREA & REDUCED-MOTION
+   These use @supports/@media and target our own
+   component classes, so they stay in components layer.
+   ─────────────────────────────────────────────── */
+@layer components {
+  @supports (padding: max(0px)) {
+    .navbar {
+      padding-right: max(1.5rem, env(safe-area-inset-right));
+      padding-left: max(1.5rem, env(safe-area-inset-left));
+    }
+    .footer {
+      padding-bottom: max(2rem, env(safe-area-inset-bottom));
+    }
+  }
+}
+
+/* prefers-reduced-motion stays unlayered — it's a
+   universal accessibility override that SHOULD win */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
+  }
+}

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مكتب المحاماة - خبرة قانونية متميزة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+     <link rel="stylesheet" href="x.css">
+</head>
+<body>  
+
+<script src="script.js"></script>
+
+
+    <!-- Background Pattern -->
+    <div class="bg-pattern"></div>
+
+    <!-- Floating Particles -->
+    <div class="particles-container" id="particles"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+            < <a href="#" class="flex items-center gap-3">
+                <svg width="45" height="45" viewBox="0 0 45 45" fill="none"> 
+                    <path d="M22.5 3L4 12v6c0 9.5 7.5 18 18.5 21 11-3 18.5-11.5 18.5-21v-6L22.5 3z" stroke="currentColor" stroke-width="2" style="color: var(--accent-gold)"/>
+                    <path d="M15 22h15M22.5 15v14" stroke="currentColor" stroke-width="2" style="color: var(--accent-gold)"/>
+                <!-- </svg>
+                <SPan class="text-xl font-bold> عبدالمنعم ابو السعود السيد </span>> -->
+                       </a>
+                       <span class="text- font-bold">عبدالمنعم ابو السعود السيد</span>
+                    
+
+            <div class="desktop-nav flex items-center gap-8">
+                <a href="#home" class="nav-link">الرئيسية</a>
+                <a href="#services" class="nav-link">خدماتنا</a>
+                <a href="#lawyers" class="nav-link">فريق المحامين</a>
+                <a href="#contact" class="nav-link">تواصل معنا</a>
+                <button class="btn-primary" onclick="window.location.href='login.html'">احجز استشارة</button>
+                <!-- <button class="btn-primary text-sm py-3 px-5">احجز استشارة</button> -->
+            </div>
+
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="flex flex-col gap-6">
+            <a href="#home" class="text-xl font-medium hover:text-[var(--accent-gold)] transition-colors">الرئيسية</a>
+            <a href="#services" class="text-xl font-medium hover:text-[var(--accent-gold)] transition-colors">خدماتنا</a>
+            <a href="#lawyers" class="text-xl font-medium hover:text-[var(--accent-gold)] transition-colors">فريق المحامين</a>
+            <a href="#contact" class="text-xl font-medium hover:text-[var(--accent-gold)] transition-colors">تواصل معنا</a>
+            <button class="btn-primary mt-4 justify-center">احجز استشارة</button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        
+        <!-- Decorative Scales -->
+        <div class="hero-scales">
+            <svg width="400" height="400" viewBox="0 0 100 100" fill="none">
+                <path d="M50 10 L50 30 M30 30 L70 30 M20 40 L35 70 L20 70 Z M80 40 L65 70 L80 70 Z M35 40 L50 70 L35 70 Z M65 40 L50 70 L65 70 Z" stroke="currentColor" stroke-width="2" style="color: var(--accent-gold)"/>
+            </svg>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-6 py-32">
+            <div class="max-w-3xl">
+                <div class="inline-flex items-center gap-2 bg-[rgba(201,162,39,0.1)] border border-[var(--accent-gold)] rounded-full px-4 py-2 mb-6 reveal">
+                    <span class="w-2 h-2 bg-[var(--accent-gold)] rounded-full animate-pulse"></span>
+                    <span class="text-[var(--accent-gold)] text-sm font-medium">محامون معتمدون منذ 1995</span>
+                </div>
+                
+                <h1 class="hero-title reveal" style="transition-delay: 0.1s">
+                    خبرة قانونية
+                    <br>
+                    <span class="font-amiri">تحمي حقوقك</span>
+                </h1>
+                
+                <p class="hero-subtitle reveal" style="transition-delay: 0.2s">
+                    نقدم خدمات قانونية متكاملة بأعلى معايير الاحترافية والسرية. فريق من أفضل المحامين المتخصصين في جميع المجالات القانونية.
+                </p>
+                
+                <div class="flex flex-wrap gap-4 mt-10 reveal" style="transition-delay: 0.3s">
+                    <button class="btn-primary">
+                        <span>احصل على استشارة مجانية</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                   
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20 reveal" style="transition-delay: 0.4s">
+                <div class="stat-card">
+                    <div class="stat-number" data-target="25">0</div>
+                    <div class="stat-label">سنة خبرة</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="3500">0</div>
+                    <div class="stat-label">قضية ناجحة</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="50">0</div>
+                    <div class="stat-label">محامي متخصص</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="98">0</div>
+                    <div class="stat-label">نسبة الرضا</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="py-24 relative" id="services">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="section-title reveal">خدماتنا القانونية</h2>
+                <div class="section-divider reveal" style="transition-delay: 0.1s"></div>
+                <p class="text-[var(--text-secondary)] mt-4 max-w-2xl mx-auto reveal" style="transition-delay: 0.2s">
+                    نقدم مجموعة شاملة من الخدمات القانونية المتخصصة لتلبية جميع احتياجاتك
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Service 1 -->
+                <div class="service-card reveal" style="transition-delay: 0.1s">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="service-title">استشارات قانونية</h3>
+                    <p class="service-desc">نقدم استشارات قانونية متخصصة في جميع المجالات مع ضمان السرية التامة والاحترافية العالية.</p>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="service-card reveal" style="transition-delay: 0.2s">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                    </div>
+                    <h3 class="service-title">قضايا تجارية</h3>
+                    <p class="service-desc">تمثيل ومتابعة القضايا التجارية والشركات بمهارة عالية وخبرة واسعة في هذا المجال.</p>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="service-card reveal" style="transition-delay: 0.3s">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                    </div>
+                    <h3 class="service-title">قضايا الأحوال الشخصية</h3>
+                    <p class="service-desc">معالجة قضايا الأسرة والطلاق والحضانة والنفقة بحساسية عالية واهتمام بجميع التفاصيل.</p>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="service-card reveal" style="transition-delay: 0.4s">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="9" y1="9" x2="15" y2="15"/>
+                            <line x1="15" y1="9" x2="9" y2="15"/>
+                        </svg>
+                    </div>
+                    <h3 class="service-title">قضايا جنائية</h3>
+                    <p class="service-desc">دفاع قوي ومحترف في القضايا الجنائية مع فريق متخصص في هذا النوع من القضايا.</p>
+                </div>
+                <div class="service-card reveal" style="transition-delay: 0.4s">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="9" y1="9" x2="15" y2="15"/>
+                            <line x1="15" y1="9" x2="9" y2="15"/>
+                        </svg>
+                    </div>
+                    <h3 class="service-title">تاسيس شركات وصيدليات </h3>
+                    <p class="service-desc">دفاع قوي ومحترف في القضايا الجنائية مع فريق متخصص في هذا النوع من القضايا.</p>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="service-card reveal" style="transition-delay: 0.5s">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            <polyline points="9 22 9 12 15 12 15 22"/>
+                        </svg>
+                    </div>
+                    <h3 class="service-title">عقارات ومقاولات</h3>
+                    <p class="service-desc">صياغة ومراجعة العقود العقارية والتعامل مع نزاعات المقاولات والمبانى.</p>
+                </div>
+
+                <!-- Service 6 -->
+                <div class="service-card reveal" style="transition-delay: 0.6s">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <h3 class="service-title">تحصيل الديون</h3>
+                    <p class="service-desc">خدمات تحصيل الديون بطرق قانونية فعالة وسريعة مع الحفاظ على حقوقك بالكامل.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lawyers Section -->
+    <section class="py-24 relative bg-[var(--bg-secondary)]" id="lawyers">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="section-title reveal">فريق المحامين</h2>
+                <div class="section-divider reveal" style="transition-delay: 0.1s"></div>
+                <p class="text-[var(--text-secondary)] mt-4 max-w-2xl mx-auto reveal" style="transition-delay: 0.2s">
+                    نخبة من أفضل المحامين المتخصصين ذوي الخبرة والكفاءة العالية
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Lawyer 1 -->
+                <div class="lawyer-card reveal" style="transition-delay: 0.1s">
+                     <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face" alt="أحمد المنصوري" class="lawyer-image"> 
+                    <div class="lawyer-info">
+                        <h3 class="lawyer-name"> محمد علي</h3>
+                        <p class="lawyer-title">محامي أول - القانون التجاري</p>
+                        <div class="lawyer-social">
+                            <a href="#" aria-label="LinkedIn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                                    <rect x="2" y="9" width="4" height="12"/>
+                                    <circle cx="4" cy="4" r="2"/>
+                                </svg>
+                            </a>
+                            <a href="https://youtu.be/guI8282wn5Q?si=tZWhHCg-u7Gf-wtD" aria-label="Twitter">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+                                </svg>
+                            </a>
+                            <a href="#" aria-label="Email">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lawyer 2 -->
+                <div class="lawyer-card reveal" style="transition-delay: 0.2s">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&crop=face" alt="سارة العتيبي" class="lawyer-image">
+                    <div class="lawyer-info">
+                        <h3 class="lawyer-name">سارة العتيبي</h3>
+                        <p class="lawyer-title">محامية - الأحوال الشخصية</p>
+                        <div class="lawyer-social">
+                            <a href="#" aria-label="LinkedIn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                                    <rect x="2" y="9" width="4" height="12"/>
+                                    <circle cx="4" cy="4" r="2"/>
+                                </svg>
+                            </a>
+                            <a href="#" aria-label="Twitter">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+                                </svg>
+                            </a>
+                            <a href="#" aria-label="Email">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lawyer 3 -->
+                <div class="lawyer-card reveal" style="transition-delay: 0.3s">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face" alt="خالد الراشد" class="lawyer-image">
+                    <div class="lawyer-info">
+                        <h3 class="lawyer-name">رمضان فؤاد </h3>
+                        <p class="lawyer-title">محامي - القانون الجنائي</p>
+                        <div class="lawyer-social">
+                            <a href="#" aria-label="LinkedIn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                                    <rect x="2" y="9" width="4" height="12"/>
+                                    <circle cx="4" cy="4" r="2"/>
+                                </svg>
+                            </a>
+                            <a href="#" aria-label="Twitter">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+                                </svg>
+                            </a>
+                            <a href="#" aria-label="Email">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lawyer 4 -->
+                <div class="lawyer-card reveal" style="transition-delay: 0.4s">
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop&crop=face" alt="# " class="lawyer-image">
+                    <div class="lawyer-info">
+                        <h3 class="lawyer-name">محمود ابو السعود </h3>
+                        <p class="lawyer-title">محامية - العقارات</p>
+                        <div class="lawyer-social">
+                            <a href="#" aria-label="LinkedIn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                                    <rect x="2" y="9" width="4" height="12"/>
+                                    <circle cx="4" cy="4" r="2"/>
+                                </svg>
+                            </a>
+                            <a href="#" aria-label="Twitter">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+                                </svg>
+                            </a>
+                            <a href="#" aria-label="Email">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-24 relative" id="contact">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-12 items-start">
+                <div class="reveal">
+                    <h2 class="section-title text-right">تواصل معنا</h2>
+                    <div class="section-divider mr-0 ml-auto" style="transition-delay: 0.1s"></div>
+                    <p class="text-[var(--text-secondary)] mt-4 mb-8">
+                        احصل على استشارة قانونية مجانية. اترك بياناتك وسيتواصل معك أحد محامينا خلال 24 ساعة.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 flex items-center justify-center bg-[rgba(201,162,39,0.1)] rounded-lg">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">العنوان</h4>
+                                <p class="text-[var(--text-secondary)]">حديق الاهرام  </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 flex items-center justify-center bg-[rgba(201,162,39,0.1)] rounded-lg">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">الهاتف</h4>
+                              <p class="text-[var(--text-secondary)]" dir="ltr"> 01019675108</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 flex items-center justify-center bg-[rgba(201,162,39,0.1)] rounded-lg">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">البريد الإلكتروني</h4>
+                                <p class="text-[var(--text-secondary)]">info@arabic-lawyer.com</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 flex items-center justify-center bg-[rgba(201,162,39,0.1)] rounded-lg">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polyline points="12 6 12 12 16 14"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">ساعات العمل</h4>
+                                <p class="text-[var(--text-secondary)]">الأحد - الخميس: 9 صباحاً - 5 مساءً</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-container reveal" style="transition-delay: 0.2s">
+                    <form id="contactForm">
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label class="form-label" for="name">الاسم الكامل</label>
+                                <input type="text" id="name" class="form-input" placeholder="أدخل اسمك" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="phone">رقم الجوال</label>
+                                <input type="tel" id="phone" class="form-input" placeholder="01006895586" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="email">البريد الإلكتروني</label>
+                            <input type="email" id="email" class="form-input" placeholder="example@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="service">نوع الاستشارة</label>
+                            <select id="service" class="form-input" required>
+                                <option value="" disabled selected>اختر نوع الاستشارة</option>
+                                <option value="commercial">قضايا تجارية</option>
+                                <option value="family">أحوال شخصية</option>
+                                <option value="criminal">قضايا جنائية</option>
+                                <option value="real-estate">عقارات ومقاولات</option>
+                                <option value="debt">تحصيل ديون</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="message">تفاصيل القضية</label>
+                              <div class="chat-box" id="chatBox">
+                                    <textarea id="message" class="form-input" placeholder="اشرح قضيتك باختصار..."  required></textarea>
+                                    <div class="chat-container">
+    
+                        </div>
+                        <button type="submit" class="btn-primary w-full justify-center">
+                            <span>إرسال الطلب</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"/>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    </div>
+</head>
+<body>
+
+<div id="chat-container">
+    <div id="chat-window">
+        
+</div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <svg width="40" height="40" viewBox="0 0 45 45" fill="none">
+                            <path d="M22.5 3L4 12v6c0 9.5 7.5 18 18.5 21 11-3 18.5-11.5 18.5-21v-6L22.5 3z" stroke="currentColor" stroke-width="2" style="color: var(--accent-gold)"/>
+                            <path d="M15 22h15M22.5 15v14" stroke="currentColor" stroke-width="2" style="color: var(--accent-gold)"/>
+                        </svg>
+                        <span class="text-lg font-bold">المحامي العربي</span>
+                    </div>
+                    <p class="text-[var(--text-secondary)] text-sm leading-relaxed">
+                        مكتب محاماة متخصص يقدم خدمات قانونية شاملة بأعلى معايير الجودة والاحترافية منذ عام 1995.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-lg mb-4">روابط سريعة</h4>
+                    <div class="footer-links flex flex-col gap-2">
+                        <a href="#home" class="hover:text-[var(--accent-gold)]">الرئيسية</a>
+                        <a href="#services" class="hover:text-[var(--accent-gold)]">خدماتنا</a>
+                        <a href="#lawyers" class="hover:text-[var(--accent-gold)]">فريق العمل</a>
+                        <a href="#contact" class="hover:text-[var(--accent-gold)]">تواصل معنا</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-lg mb-4">خدماتنا</h4>
+                    <div class="footer-links flex flex-col gap-2">
+                        <a href="#" class="hover:text-[var(--accent-gold)]">استشارات قانونية</a>
+                        <a href="#" class="hover:text-[var(--accent-gold)]">قضايا تجارية</a>
+                        <a href="#" class="hover:text-[var(--accent-gold)]">أحوال شخصية</a>
+                        <a href="#" class="hover:text-[var(--accent-gold)]">قضايا جنائية</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-lg mb-4">تابعنا</h4>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-[rgba(201,162,39,0.1)] rounded-lg hover:bg-[var(--accent-gold)] transition-colors" aria-label="Twitter">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2">
+                                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-[rgba(201,162,39,0.1)] rounded-lg hover:bg-[var(--accent-gold)] transition-colors" aria-label="LinkedIn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2">
+                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                                <rect x="2" y="9" width="4" height="12"/>
+                                <circle cx="4" cy="4" r="2"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-[rgba(201,162,39,0.1)] rounded-lg hover:bg-[var(--accent-gold)] transition-colors" aria-label="Instagram">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-[var(--border-color)] pt-6 text-center text-[var(--text-secondary)] text-sm">
+                <p>جميع الحقوق محفوظة 2024 - المحامي العربي</p>
+            </div>
+        </div>
+    </footer>
+          <script src="x.js"> </script>
+     
+</body>
+</html>

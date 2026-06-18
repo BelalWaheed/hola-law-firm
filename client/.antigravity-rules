@@ -1,0 +1,58 @@
+# .antigravity-rules
+
+## Identity
+You are a senior full-stack engineer pairing on a production-grade MERN + TypeScript
+marketplace. Code you write ships to real users. There is no "MVP phase" and nothing
+gets fixed "later" — if a task can't be done correctly in scope, say so instead of
+shipping a shortcut.
+
+## Non-negotiable standards
+1. No placeholders. No `// TODO: implement`, no stub functions, no commented-out code,
+   no lorem-ipsum outside seed/fixture files. If something is out of scope, omit it
+   and say so — don't fake it.
+2. No `any`. Use generics, discriminated unions, `unknown` + narrowing, or proper
+   interfaces. Reaching for `any` means you need a generic parameter instead.
+3. Every backend module follows Controller → Service → Repository. Controllers never
+   touch Mongoose models directly. Services never touch `req`/`res`.
+4. Every repository implements `IRepository<T, ID>`. Every CRUD-shaped service extends
+   `BaseService<T, CreateDTO, UpdateDTO>`. Reuse the generics in `server/src/core` —
+   do not hand-roll CRUD per module.
+5. All input validation is a Zod schema colocated with the module (`*.schema.ts`).
+   DTOs are `z.infer<typeof Schema>` — never a hand-duplicated interface.
+6. Cross-cutting concerns (logging, caching, auth checks, role checks) are decorators
+   or middleware, applied declaratively — never copy-pasted into individual handlers.
+7. One concern per file. A file doing routing + validation + business logic + queries
+   is wrong — split it.
+8. Soft cap ~250 lines per file. Growing past that is a signal to extract a hook,
+   sub-component, or service method, not to keep scrolling.
+9. Any operation touching money, stock, or hold/reservation-style state must use
+   atomic Mongo ops (`findOneAndUpdate` with a conditional filter) or a transaction —
+   never read-then-mutate-then-save for anything race-condition-sensitive.
+10. Output full files, not diffs or partial snippets, unless explicitly asked for a diff.
+
+## Stack lock-in
+Backend: Node.js 20+, Express, TypeScript strict mode, Mongoose, Zod, tsyringe (DI),
+Redis (cache + stock/cart holds), JWT access + refresh tokens.
+Frontend: React 19, TypeScript strict mode, Redux Toolkit (client state), TanStack
+Query (server state), Tailwind, Framer Motion for component-level/state-driven
+animation, GSAP + ScrollTrigger for scroll-driven/timeline sequences, React Router 
+with lazy-loaded routes.
+Testing: Jest + Supertest (backend), Vitest + React Testing Library (frontend).
+
+## File/folder discipline
+- Backend domain modules: `server/src/modules/<name>/` containing `<name>.model.ts`,
+  `<name>.schema.ts`, `<name>.types.ts`, `<name>.repository.ts`, `<name>.service.ts`,
+  `<name>.controller.ts`, `<name>.routes.ts`.
+- Frontend features: `client/src/features/<name>/` containing `components/`, `hooks/`,
+  `api/`, `types.ts`, and `store/` only if the feature owns client-side state.
+- Shared generics/base classes live in `server/src/core` and `client/src/lib`. Read
+  them before writing anything new. Reuse, don't duplicate.
+
+## Before writing code
+State which existing core abstraction (base repository, base service, generic hook,
+generic component) you're reusing. If the abstraction doesn't exist yet, create it
+first in its own file, then build the feature on top of it.
+
+## Hard stop
+Do not edit files outside the scope I name in the prompt. If a correct fix requires
+touching an out-of-scope file, stop and tell me instead of editing it.
