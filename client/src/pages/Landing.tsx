@@ -7,10 +7,12 @@ import { ContactSection } from "../features/landing/components/ContactSection";
 import { Footer } from "../features/landing/components/Footer";
 import { getSiteSettings } from "../features/landing/api/landing.api";
 import { defaultLandingData, type LandingPageContent } from "../features/landing/data/landingData";
+import { LoadingSpinner } from "../components/LoadingSpinner";
+import { clientCache } from "../utils/cache";
 
 export const Landing: React.FC = () => {
-  const [settings, setSettings] = useState<LandingPageContent | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [settings, setSettings] = useState<LandingPageContent | null>(clientCache.settings);
+  const [loading, setLoading] = useState(!clientCache.settings);
 
   // Fetch site settings
   useEffect(() => {
@@ -19,6 +21,7 @@ export const Landing: React.FC = () => {
         const response = await getSiteSettings();
         if (response.success && response.data) {
           setSettings(response.data);
+          clientCache.settings = response.data;
         } else {
           setSettings(defaultLandingData);
         }
@@ -65,11 +68,7 @@ export const Landing: React.FC = () => {
   }, [loading]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-bg-primary text-white flex items-center justify-center font-sans">
-        جاري التحميل...
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   const siteData = settings || defaultLandingData;

@@ -12,6 +12,6 @@ export class SettingsRepository {
   }
 
   async update(data: UpdateSettingsDTO): Promise<ISiteSettings | null> {
-    return SiteSettingsModel.findOneAndUpdate({}, data, { new: true, upsert: true }).exec();
+    return SiteSettingsModel.findOneAndUpdate({}, data, { returnDocument: "after", upsert: true }).exec();
   }
 }

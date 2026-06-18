@@ -1,20 +1,14 @@
 import mongoose from "mongoose";
 
-let cachedConnection: Promise<typeof mongoose> | null = null;
+let cached = (global as any).mongoose;
+
+if (!cached) {
+  cached = (global as any).mongoose = { conn: null, promise: null };
+}
 
 export const connectDB = async () => {
-  if (mongoose.connection.readyState === 1) {
-    return;
-  }
-
-  if (cachedConnection) {
-    try {
-      await cachedConnection;
-      return;
-    } catch (error) {
-      cachedConnection = null; // Reset cache on failure to allow retry
-      throw error;
-    }
+  if (cached.conn) {
+    return cached.conn;
   }
 
   const atlasUri = process.env.MONGO_URI;
@@ -25,38 +19,41 @@ export const connectDB = async () => {
     ? atlasUri.includes("<username>") || atlasUri.includes("<password>")
     : true;
 
+  // Determine URI based on environment
+  let uri = localUri;
+  let isAtlas = false;
   if (atlasUri && !isAtlasPlaceholder) {
-    try {
-      console.log("Attempting to connect to configured MongoDB database...");
-      cachedConnection = mongoose.connect(atlasUri, {
-        serverSelectionTimeoutMS: 5000,
-        connectTimeoutMS: 5000,
-      });
-      await cachedConnection;
-      console.log("Successfully connected to configured MongoDB database");
-      return;
-    } catch (error) {
-      cachedConnection = null; // Reset cache on failure to allow retry
-      console.error("Database connection failed:", error);
-      throw error;
-    }
+    uri = atlasUri;
+    isAtlas = true;
+  } else if (process.env.NODE_ENV === "production" || process.env.VERCEL) {
+    // On Vercel or in production, we MUST have a valid MONGO_URI.
+    // Falling back to 127.0.0.1 will just cause timeouts and lambda crashes.
+    throw new Error(
+      "MONGO_URI is not properly configured for production. Please set a valid MongoDB Atlas URI."
+    );
   }
 
-  // Fallback to local DB ONLY if MONGO_URI is missing or contains placeholders
-  console.log(
-    "MONGO_URI not configured. Attempting connection to local MongoDB database...",
-  );
-  try {
-    console.log(`Attempting to connect to local MongoDB: ${localUri}`);
-    cachedConnection = mongoose.connect(localUri, {
+  if (!cached.promise) {
+    console.log(`Attempting to connect to ${isAtlas ? "MongoDB Atlas (Online)" : "local MongoDB"}...`);
+    const opts = {
+      bufferCommands: false,
       serverSelectionTimeoutMS: 5000,
       connectTimeoutMS: 5000,
+    };
+
+    cached.promise = mongoose.connect(uri, opts).then((mongoose) => {
+      console.log(`Successfully connected to ${isAtlas ? "MongoDB Atlas (Online)" : "local MongoDB"}`);
+      return mongoose;
     });
-    await cachedConnection;
-    console.log("Successfully connected to local MongoDB");
+  }
+
+  try {
+    cached.conn = await cached.promise;
   } catch (error) {
-    cachedConnection = null; // Reset cache on failure to allow retry
-    console.error("Local MongoDB connection failed:", error);
+    cached.promise = null; // Reset cache on failure to allow retry
+    console.error("MongoDB connection failed:", error);
     throw error;
   }
+
+  return cached.conn;
 };

@@ -9,6 +9,7 @@ import {
   defaultLandingData,
   type LandingPageContent,
 } from "../features/landing/data/landingData";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 interface ConsultationStatusItem {
   _id: string;
@@ -188,11 +189,7 @@ export const Status: React.FC = () => {
   };
 
   if (loadingSettings) {
-    return (
-      <div className="min-h-screen bg-bg-primary text-white flex items-center justify-center font-sans">
-        جاري التحميل...
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   const siteData = settings || defaultLandingData;

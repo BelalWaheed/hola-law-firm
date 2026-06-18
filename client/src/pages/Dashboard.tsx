@@ -6,23 +6,20 @@ import { getDashboardStats, updateConsultationStatus } from "../features/dashboa
 import { getSiteSettings, updateSiteSettings } from "../features/landing/api/landing.api";
 import type { LandingPageContent } from "../features/landing/data/landingData";
 import { Logo } from "../components/Logo";
+import { LoadingSpinner } from "../components/LoadingSpinner";
+import { clientCache, type DashboardStatsData } from "../utils/cache";
 
-interface DashboardStatsData {
-  totalConsultations: number;
-  pendingRequests: number;
-  activeCases: number;
-  availableLawyers: number;
-  latestConsultations: Consultation[];
-}
+
 
 export const Dashboard: React.FC = () => {
   const navigate = useNavigate();
-  const [stats, setStats] = useState<DashboardStatsData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState<DashboardStatsData | null>(clientCache.stats);
+  const [loading, setLoading] = useState(!clientCache.stats);
+  const [loadingSettings, setLoadingSettings] = useState(!clientCache.settings);
   const [activeTab, setActiveTab] = useState<"consultations" | "settings">("consultations");
 
   // Site Settings Form States
-  const [formData, setFormData] = useState<LandingPageContent | null>(null);
+  const [formData, setFormData] = useState<LandingPageContent | null>(clientCache.settings);
   const [savingSettings, setSavingSettings] = useState(false);
   const [settingsError, setSettingsError] = useState("");
   const [settingsSuccess, setSettingsSuccess] = useState(false);
@@ -40,6 +37,7 @@ export const Dashboard: React.FC = () => {
       const response = await getDashboardStats();
       if (response.success) {
         setStats(response.data);
+        clientCache.stats = response.data;
       }
     } catch (error) {
       console.error("Session expired or fetch failed:", error);
@@ -53,6 +51,7 @@ export const Dashboard: React.FC = () => {
       const response = await getSiteSettings();
       if (response.success && response.data) {
         setFormData(response.data);
+        clientCache.settings = response.data;
       }
     } catch (error) {
       console.error("Failed to load settings in dashboard:", error);
@@ -67,9 +66,29 @@ export const Dashboard: React.FC = () => {
     }
     
     const initData = async () => {
-      setLoading(true);
-      await Promise.all([fetchStats(), fetchSettings()]);
-      setLoading(false);
+      // 1. Load stats first. Only show spinner if not in cache yet.
+      if (!clientCache.stats) {
+        setLoading(true);
+      }
+      try {
+        await fetchStats();
+      } catch (err) {
+        console.error("Failed to load dashboard stats:", err);
+      } finally {
+        setLoading(false);
+      }
+
+      // 2. Load settings. Only show spinner if not in cache yet.
+      if (!clientCache.settings) {
+        setLoadingSettings(true);
+      }
+      try {
+        await fetchSettings();
+      } catch (err) {
+        console.error("Failed to load settings in background:", err);
+      } finally {
+        setLoadingSettings(false);
+      }
     };
     initData();
   }, [navigate, fetchStats, fetchSettings]);
@@ -121,6 +140,7 @@ export const Dashboard: React.FC = () => {
       const response = await updateSiteSettings(formData);
       if (response.success) {
         setSettingsSuccess(true);
+        clientCache.settings = formData; // Update cache
         setTimeout(() => setSettingsSuccess(false), 3000);
       }
     } catch (err) {
@@ -184,7 +204,7 @@ export const Dashboard: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="min-h-screen bg-bg-primary text-white flex items-center justify-center">جاري التحميل...</div>;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -263,7 +283,9 @@ export const Dashboard: React.FC = () => {
               </>
             )
           ) : (
-            formData && (
+            loadingSettings || !formData ? (
+              <LoadingSpinner fullScreen={false} text="جاري تحميل إعدادات الموقع..." />
+            ) : (
               <div className="p-8 rounded-[16px] bg-bg-card border border-border-color">
                 <div className="flex flex-col md:flex-row gap-6">
                   {/* Settings sub-tabs sidebar */}
