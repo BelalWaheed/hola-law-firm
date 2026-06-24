@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LoginForm } from "../features/auth/components/LoginForm";
+import { LoginForm } from "../auth/LoginForm";
 import { Logo } from "../components/Logo";
 
 export const Login: React.FC = () => {

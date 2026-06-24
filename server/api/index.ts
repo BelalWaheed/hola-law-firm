@@ -1,5 +1,5 @@
 import { app } from "../src/app";
-import { connectDB } from "../src/core/utils/db";
+import { connectDB } from "../src/db";
 
 // Ensure database connection is initialized for serverless requests
 connectDB().catch((err) => {

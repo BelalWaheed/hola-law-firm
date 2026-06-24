@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Navbar } from "../features/landing/components/Navbar";
-import { Footer } from "../features/landing/components/Footer";
-import {
-  getSiteSettings,
-  checkConsultationStatus,
-} from "../features/landing/api/landing.api";
+import { Navbar } from "../sections/Navbar";
+import { Footer } from "../sections/Footer";
+import { getSiteSettings } from "../api/settings";
+import { checkConsultationStatus } from "../api/consultations";
 import {
   defaultLandingData,
   type LandingPageContent,
-} from "../features/landing/data/landingData";
+} from "../data/landingData";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 
 interface ConsultationStatusItem {

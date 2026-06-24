@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
-import { errorHandler } from "./core/middlewares/error.middleware";
+import { errorHandler } from "./middleware/error";
+import { connectDB } from "./db";
 
 const app = express();
 
@@ -12,8 +13,6 @@ app.use(express.urlencoded({ extended: true }));
 const clientBuildPath = path.join(__dirname, "../../client/dist");
 app.use(express.static(clientBuildPath));
 
-import { connectDB } from "./core/utils/db";
-
 // Middleware to ensure database connection is active for specific API requests
 const requireDB = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
@@ -24,12 +23,12 @@ const requireDB = async (req: express.Request, res: express.Response, next: expr
   }
 };
 
-import authRoutes from "./modules/auth/auth.routes";
-import consultationRoutes from "./modules/consultations/consultation.routes";
-import settingsRoutes from "./modules/settings/settings.routes";
+import authRoutes from "./routes/auth";
+import consultationRoutes from "./routes/consultations";
+import settingsRoutes from "./routes/settings";
 
 // Register Modules Routes
-app.use("/api/auth", authRoutes); // Auth does not require database connection
+app.use("/api/auth", authRoutes);
 app.use("/api/consultations", requireDB, consultationRoutes);
 app.use("/api/settings", requireDB, settingsRoutes);
 

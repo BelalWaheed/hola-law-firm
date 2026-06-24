@@ -1,15 +1,48 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { DashboardStats } from "../features/dashboard/components/DashboardStats";
-import { ConsultationsTable, type Consultation } from "../features/dashboard/components/ConsultationsTable";
-import { getDashboardStats, updateConsultationStatus } from "../features/dashboard/api/dashboard.api";
-import { getSiteSettings, updateSiteSettings } from "../features/landing/api/landing.api";
-import type { LandingPageContent } from "../features/landing/data/landingData";
+import { DashboardStats } from "../dashboard/DashboardStats";
+import { ConsultationsTable, type Consultation } from "../dashboard/ConsultationsTable";
+import { getDashboardStats, updateConsultationStatus, getLatestSync } from "../api/consultations";
+import { getSiteSettings, updateSiteSettings } from "../api/settings";
+import type { LandingPageContent } from "../data/landingData";
 import { Logo } from "../components/Logo";
 import { LoadingSpinner } from "../components/LoadingSpinner";
-import { clientCache, type DashboardStatsData } from "../utils/cache";
+import { clientCache, type DashboardStatsData } from "../data/cache";
 
-
+// Play gold chime notification sound using Web Audio API (O(1) client execution, no asset downloads)
+const playNotificationSound = () => {
+  try {
+    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContext) return;
+    const ctx = new AudioContext();
+    const now = ctx.currentTime;
+    
+    // Play dual gold chime: E5 (659.25Hz) followed by A5 (880.00Hz)
+    const osc1 = ctx.createOscillator();
+    const gain1 = ctx.createGain();
+    osc1.type = "sine";
+    osc1.frequency.setValueAtTime(659.25, now);
+    gain1.gain.setValueAtTime(0.1, now);
+    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+    osc1.connect(gain1);
+    gain1.connect(ctx.destination);
+    osc1.start(now);
+    osc1.stop(now + 0.4);
+    
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.type = "sine";
+    osc2.frequency.setValueAtTime(880.00, now + 0.12);
+    gain2.gain.setValueAtTime(0.15, now + 0.12);
+    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+    osc2.connect(gain2);
+    gain2.connect(ctx.destination);
+    osc2.start(now + 0.12);
+    osc2.stop(now + 0.6);
+  } catch (error) {
+    console.warn("Audio Context playback blocked or unsupported:", error);
+  }
+};
 
 export const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -17,6 +50,16 @@ export const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(!clientCache.stats);
   const [loadingSettings, setLoadingSettings] = useState(!clientCache.settings);
   const [activeTab, setActiveTab] = useState<"consultations" | "settings">("consultations");
+
+  // Real-time toast notifications state & sync ref for O(1) DB query optimization
+  interface ToastMessage {
+    id: string;
+    clientName: string;
+    consultationType: string;
+    consultation: Consultation;
+  }
+  const [activeToasts, setActiveToasts] = useState<ToastMessage[]>([]);
+  const syncRef = useRef<{ count: number; lastUpdated: number } | null>(null);
 
   // Site Settings Form States
   const [formData, setFormData] = useState<LandingPageContent | null>(clientCache.settings);
@@ -38,6 +81,14 @@ export const Dashboard: React.FC = () => {
       if (response.success) {
         setStats(response.data);
         clientCache.stats = response.data;
+        
+        // Keep syncRef in sync with local data state to prevent duplicate checks
+        if (response.data) {
+          const total = response.data.totalConsultations;
+          const latestDoc = response.data.latestConsultations?.[0];
+          const latestTime = latestDoc ? new Date(latestDoc.updatedAt || latestDoc.createdAt).getTime() : 0;
+          syncRef.current = { count: total, lastUpdated: latestTime };
+        }
       }
     } catch (error) {
       console.error("Session expired or fetch failed:", error);
@@ -56,6 +107,91 @@ export const Dashboard: React.FC = () => {
     } catch (error) {
       console.error("Failed to load settings in dashboard:", error);
     }
+  }, []);
+
+  const handleViewToastDetails = (toast: ToastMessage) => {
+    setActiveTab("consultations");
+    setSelectedConsultation(toast.consultation);
+    setReplyText(toast.consultation.adminReply || "");
+    setActiveToasts((prev) => prev.filter((t) => t.id !== toast.id));
+  };
+
+  // Real-time metadata polling
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    let pollInterval: any = null;
+
+    const performSync = async () => {
+      if (document.visibilityState !== "visible") return;
+      try {
+        const syncResponse = await getLatestSync();
+        if (syncResponse.success && syncResponse.data) {
+          const { count, lastUpdated } = syncResponse.data;
+          
+          if (!syncRef.current) {
+            syncRef.current = { count, lastUpdated };
+            return;
+          }
+
+          const prev = syncRef.current;
+          // Check if there are updates
+          if (prev.count !== count || prev.lastUpdated !== lastUpdated) {
+            // Something has changed! Let's fetch the new stats
+            const statsResponse = await getDashboardStats();
+            if (statsResponse.success) {
+              setStats(statsResponse.data);
+              clientCache.stats = statsResponse.data;
+
+              // If new consultations were added, trigger chime and toast notifications
+              if (count > prev.count && statsResponse.data.latestConsultations) {
+                const newItems = statsResponse.data.latestConsultations.slice(0, count - prev.count);
+                newItems.reverse().forEach((c: Consultation) => {
+                  const toastId = Math.random().toString(36).substring(2, 9);
+                  setActiveToasts((prevToasts) => [
+                    ...prevToasts,
+                    {
+                      id: toastId,
+                      clientName: c.clientName,
+                      consultationType: c.consultationType,
+                      consultation: c,
+                    },
+                  ]);
+                  playNotificationSound();
+                  
+                  setTimeout(() => {
+                    setActiveToasts((prevToasts) => prevToasts.filter((t) => t.id !== toastId));
+                  }, 8000);
+                });
+              }
+            }
+            syncRef.current = { count, lastUpdated };
+          }
+        }
+      } catch (err) {
+        console.error("Error during background sync:", err);
+      }
+    };
+
+    // Run immediately when component mounts
+    performSync();
+
+    // Poll metadata endpoint every 12 seconds
+    pollInterval = setInterval(performSync, 12000);
+
+    // Sync immediately when user switches focus back to the page
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        performSync();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      if (pollInterval) clearInterval(pollInterval);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
 
   useEffect(() => {
@@ -732,6 +868,77 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Toast Notifications Container */}
+      <div className="fixed bottom-6 left-6 z-50 flex flex-col gap-3 max-w-sm w-full">
+        {activeToasts.map((toast) => (
+          <div
+            key={toast.id}
+            className="p-4 rounded-lg bg-bg-card/95 border border-accent-gold/45 shadow-2xl backdrop-blur-md flex flex-col gap-2 transition-all transform text-right"
+            dir="rtl"
+            style={{
+              animation: "slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+              boxShadow: "0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(201, 162, 39, 0.15)",
+            }}
+          >
+            {/* Header */}
+            <div className="flex justify-between items-center border-b border-border-color pb-2">
+              <span className="text-accent-gold font-bold text-sm font-amiri flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-accent-gold animate-pulse shadow-[0_0_8px_var(--accent-gold)]" />
+                طلب استشارة جديد!
+              </span>
+              <button
+                type="button"
+                onClick={() => setActiveToasts((prev) => prev.filter((t) => t.id !== toast.id))}
+                className="text-text-secondary hover:text-white transition-colors cursor-pointer text-xs"
+              >
+                ✕
+              </button>
+            </div>
+            {/* Body */}
+            <div className="text-xs space-y-1.5 text-white">
+              <div className="flex justify-between">
+                <span className="text-text-secondary font-medium">اسم العميل:</span>
+                <span className="font-bold">{toast.clientName}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-text-secondary font-medium">نوع الاستشارة:</span>
+                <span className="text-accent-gold-light font-medium">{toast.consultationType}</span>
+              </div>
+            </div>
+            {/* Action Buttons */}
+            <div className="flex justify-end gap-2 mt-2 pt-2 border-t border-border-color/30">
+              <button
+                type="button"
+                onClick={() => setActiveToasts((prev) => prev.filter((t) => t.id !== toast.id))}
+                className="px-3 py-1.5 text-[10px] text-text-secondary hover:text-white border border-border-color rounded transition-colors cursor-pointer font-medium"
+              >
+                تجاهل
+              </button>
+              <button
+                type="button"
+                onClick={() => handleViewToastDetails(toast)}
+                className="px-3.5 py-1.5 text-[10px] bg-accent-gold text-bg-primary hover:bg-accent-gold-light rounded font-bold transition-all shadow-md hover:shadow-lg cursor-pointer"
+              >
+                عرض التفاصيل
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <style>{`
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateX(-100%) translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0) translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
 };

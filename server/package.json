@@ -1,8 +1,8 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Simplified Law Firm API server",
+  "main": "api/index.ts",
   "scripts": {
     "dev": "node --watch -r ts-node/register --env-file=.env src/index.ts",
     "build": "tsc",

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Navbar } from "../features/landing/components/Navbar";
-import { HeroSection } from "../features/landing/components/HeroSection";
-import { ServicesSection } from "../features/landing/components/ServicesSection";
-import { LawyersSection } from "../features/landing/components/LawyersSection";
-import { ContactSection } from "../features/landing/components/ContactSection";
-import { Footer } from "../features/landing/components/Footer";
-import { getSiteSettings } from "../features/landing/api/landing.api";
-import { defaultLandingData, type LandingPageContent } from "../features/landing/data/landingData";
+import { Navbar } from "../sections/Navbar";
+import { HeroSection } from "../sections/HeroSection";
+import { ServicesSection } from "../sections/ServicesSection";
+import { LawyersSection } from "../sections/LawyersSection";
+import { ContactSection } from "../sections/ContactSection";
+import { Footer } from "../sections/Footer";
+import { getSiteSettings } from "../api/settings";
+import { defaultLandingData, type LandingPageContent } from "../data/landingData";
 import { LoadingSpinner } from "../components/LoadingSpinner";
-import { clientCache } from "../utils/cache";
+import { clientCache } from "../data/cache";
 
 export const Landing: React.FC = () => {
   const [settings, setSettings] = useState<LandingPageContent | null>(clientCache.settings);
