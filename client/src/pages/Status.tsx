@@ -7,7 +7,7 @@ import {
   defaultLandingData,
   type LandingPageContent,
 } from "../data/landingData";
-import { LoadingSpinner } from "../components/LoadingSpinner";
+import { clientCache } from "../data/cache";
 
 interface ConsultationStatusItem {
   _id: string;
@@ -19,8 +19,9 @@ interface ConsultationStatusItem {
 }
 
 export const Status: React.FC = () => {
-  const [settings, setSettings] = useState<LandingPageContent | null>(null);
-  const [loadingSettings, setLoadingSettings] = useState(true);
+  const [settings, setSettings] = useState<LandingPageContent>(
+    clientCache.settings || defaultLandingData
+  );
 
   // Use lazy state initialization to prevent sync state updates in mount effect
   const [phone, setPhone] = useState(() => {
@@ -46,13 +47,10 @@ export const Status: React.FC = () => {
         const response = await getSiteSettings();
         if (response.success && response.data) {
           setSettings(response.data);
-        } else {
-          setSettings(defaultLandingData);
+          clientCache.settings = response.data;
         }
       } catch {
-        setSettings(defaultLandingData);
-      } finally {
-        setLoadingSettings(false);
+        // default already set
       }
     };
     fetchSettings();
@@ -186,11 +184,7 @@ export const Status: React.FC = () => {
     await fetchStatus(trimmedPhone);
   };
 
-  if (loadingSettings) {
-    return <LoadingSpinner />;
-  }
-
-  const siteData = settings || defaultLandingData;
+  const siteData = settings;
 
   const responded = results ? results.filter((item) => !!item.adminReply) : [];
   const pending = results ? results.filter((item) => !item.adminReply) : [];

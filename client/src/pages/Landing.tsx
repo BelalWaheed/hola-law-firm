@@ -7,14 +7,15 @@ import { ContactSection } from "../sections/ContactSection";
 import { Footer } from "../sections/Footer";
 import { getSiteSettings } from "../api/settings";
 import { defaultLandingData, type LandingPageContent } from "../data/landingData";
-import { LoadingSpinner } from "../components/LoadingSpinner";
 import { clientCache } from "../data/cache";
 
 export const Landing: React.FC = () => {
-  const [settings, setSettings] = useState<LandingPageContent | null>(clientCache.settings);
-  const [loading, setLoading] = useState(!clientCache.settings);
+  // Always start with cached or default data — never show a spinner on load
+  const [settings, setSettings] = useState<LandingPageContent>(
+    clientCache.settings || defaultLandingData
+  );
 
-  // Fetch site settings
+  // Fetch real settings in background and silently update
   useEffect(() => {
     const fetchSettings = async () => {
       try {
@@ -22,23 +23,17 @@ export const Landing: React.FC = () => {
         if (response.success && response.data) {
           setSettings(response.data);
           clientCache.settings = response.data;
-        } else {
-          setSettings(defaultLandingData);
         }
       } catch (error) {
         console.error("Failed to fetch settings on Landing page:", error);
-        setSettings(defaultLandingData);
-      } finally {
-        setLoading(false);
+        // defaultLandingData is already showing — nothing to do
       }
     };
     fetchSettings();
   }, []);
 
-  // Scroll reveal transitions - only setup after loading completes
+  // Scroll reveal transitions
   useEffect(() => {
-    if (loading) return;
-
     // Smooth scroll to element if hash is present in URL on initial mount
     const hash = window.location.hash;
     if (hash) {
@@ -65,13 +60,7 @@ export const Landing: React.FC = () => {
 
     revealElements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, [loading]);
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
-  const siteData = settings || defaultLandingData;
+  }, []);
 
   return (
     <div className="relative min-h-screen text-white bg-bg-primary overflow-x-hidden">
@@ -80,12 +69,12 @@ export const Landing: React.FC = () => {
       <div className="blob blob-1" />
       <div className="blob blob-2" />
 
-      <Navbar settings={siteData} />
-      <HeroSection settings={siteData} />
-      <ServicesSection settings={siteData} />
-      <LawyersSection settings={siteData} />
-      <ContactSection settings={siteData} />
-      <Footer settings={siteData} />
+      <Navbar settings={settings} />
+      <HeroSection settings={settings} />
+      <ServicesSection settings={settings} />
+      <LawyersSection settings={settings} />
+      <ContactSection settings={settings} />
+      <Footer settings={settings} />
     </div>
   );
 };
